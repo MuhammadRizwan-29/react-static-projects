@@ -8,6 +8,7 @@ export default function Generator() {
   let [lowercase, setLowercase] = useState(false);
   let [incNumber, setIncNumber] = useState(false);
   let [incSymbol, setIncSymbol] = useState(false);
+  let [passLength, setPassLength] = useState(0);
 
   let generatePassword = () => {
     let charSet = "";
