@@ -8,18 +8,33 @@ export default function Generator() {
   let [lowercase, setLowercase] = useState(false);
   let [incNumber, setIncNumber] = useState(false);
   let [incSymbol, setIncSymbol] = useState(false);
-  let [passLength, setPassLength] = useState(0);
+  let [passLength, setPassLength] = useState(10);
+  let [finalPassword, setFinalPassword] = useState("");
 
   let generatePassword = () => {
+    let finalPassword = "";
     let charSet = "";
     if (uppercase || lowercase || incNumber || incSymbol) {
       if (uppercase) charSet += UC;
       if (lowercase) charSet += LC;
       if (incNumber) charSet += NC;
       if (incSymbol) charSet += SC;
+
+      for (let i = 0; i < passLength; i++) {
+        finalPassword += charSet.charAt(
+          Math.floor(Math.random() * charSet.length)
+        );
+        setFinalPassword(finalPassword);
+      }
+      console.log(finalPassword);
+      toast.success("You've created random password sucessfull 🎉✨🎉");
     } else {
       toast.error("Please select at least one option 😔");
     }
+  };
+  let copyPassword = () => {
+    navigator.clipboard.writeText(finalPassword);
+    toast.success("The password has been copied 😍");
   };
   return (
     <div className="container mr-auto ml-auto p-4 flex items-center justify-center">
@@ -35,8 +50,12 @@ export default function Generator() {
             type="text"
             className="w-[80%] px-2 shadow-[0_0_4px_2px_rgba(0,128,0,0.5)] focus:outline-none"
             readOnly
+            value={finalPassword}
           />
-          <button className="px-4 py-1 bg-green-500 text-white w-[20%]">
+          <button
+            className="px-4 py-1 bg-green-500 text-white w-[20%]"
+            onClick={copyPassword}
+          >
             COPY
           </button>
         </div>
@@ -47,7 +66,11 @@ export default function Generator() {
           </label>
           <input
             type="number"
-            className="w-[20%] px-2 py-1 shadow-[0_0_4px_2px_rgba(0,128,0,0.5)] focus:outline-none"
+            className="w-[20%] px-2 py-1 text-center no-arrows shadow-[0_0_4px_2px_rgba(0,128,0,0.5)] focus:outline-none"
+            value={passLength}
+            onChange={(event) => setPassLength(event.target.value)}
+            min={10}
+            max={20}
           />
         </div>
 
