@@ -5,13 +5,18 @@ import Title from "../Components/Title/Title";
 
 export default function Weather() {
   let [cityName, setCityName] = useState("");
-
+  let [weatherData, setWeatherData] = useState();
   return (
     <div className="w-[100%] h-[100vh] bg-green-500 px-4">
       <div className="max-w-[1280px] mx-auto">
         <Title />
-        <Form cityName={cityName} setCityName={setCityName} />
-        <Result />
+        <Form
+          cityName={cityName}
+          setCityName={setCityName}
+          weatherData={weatherData}
+          setWeatherData={setWeatherData}
+        />
+        <Result weatherData={weatherData} setWeatherData={setWeatherData} />
       </div>
     </div>
   );
