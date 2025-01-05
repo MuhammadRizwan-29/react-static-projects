@@ -28,6 +28,12 @@ function App() {
       )
     );
   }
+
+  function handleClearAll() {
+    console.log("Clear All");
+    setItems([]);
+  }
+
   return (
     <div className="app">
       <Header />
@@ -36,6 +42,7 @@ function App() {
         items={items}
         onDeleteItem={handleDeleteItem}
         onToggleItem={handleToggleItem}
+        onClearAll={handleClearAll}
       />
       <Stats items={items} />
     </div>
