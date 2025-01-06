@@ -5,7 +5,7 @@ export default function PackagingList({
   items,
   onDeleteItem,
   onToggleItem,
-  handleClearAll,
+  onClearAll,
 }) {
   const [sortBy, setSortBy] = useState("input");
   let sortedItems;
@@ -38,7 +38,7 @@ export default function PackagingList({
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
-        <button onClick={() => handleClearAll}>Clear List</button>
+        <button onClick={onClearAll}>Clear List</button>
       </div>
     </div>
   );
