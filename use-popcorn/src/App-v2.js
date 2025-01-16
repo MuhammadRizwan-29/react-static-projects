@@ -1,3 +1,4 @@
+// import data from "./data/data";
 import { useEffect, useState } from "react";
 
 import Header from "./components/Header/Header";
@@ -9,24 +10,28 @@ import WatchedList from "./components/WatchedList/WatchedList";
 import Search from "./components/Search/Search";
 import SelectedMovie from "./components/SelectedMovie/SelectedMovie";
 
+// const { tempMovieData, tempWatchedData } = data;
 const KEY = "938a0185";
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [query, setQuery] = useState("interstellar");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedID, setSelectedID] = useState(null);
 
-  // const [watched, setWatched] = useState([]);
-  /* TRICK #02.02 */
-  const [watched, setWatched] = useState(function () {
-    const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
-  });
+  /*  
 
+  useEffect(function () {
+    fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=${KEY}&s=interstellar`)
+      .then((res) => res.json())
+      .then((data) => setMovies(data.Search));
+  }, []);
+
+  */
   function handleSelectMovie(id) {
     setSelectedID((selectedID) => (id === selectedID ? null : id));
   }
@@ -37,17 +42,7 @@ function App() {
 
   function handleAddWatched(movie) {
     setWatched((watched) => [...watched, movie]);
-    /* TRICK #01 */
-    // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
-
-  /* TRICK #02.01 */
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
 
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
