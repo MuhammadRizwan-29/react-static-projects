@@ -12,6 +12,7 @@ export default function FinishScreen({
   if (percentage >= 50 && percentage < 80) emoji = "😃";
   if (percentage >= 0 && percentage < 50) emoji = "🤔";
   if (percentage === 0) emoji = "🤦‍♂️";
+
   return (
     <>
       <p className="result">

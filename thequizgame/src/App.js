@@ -10,6 +10,8 @@ import Question from "./components/Question/Question";
 import NextButton from "./components/NextButton/NextButton";
 import Progress from "./components/Progress/Progress";
 import FinishScreen from "./components/FinishScreen/FinishScreen";
+import Timer from "./components/Timer/Timer";
+const SECS_PER_QUESTIONS = 30;
 const initialState = {
   questions: [],
   status: "Loading",
@@ -17,6 +19,7 @@ const initialState = {
   answer: null,
   points: 0,
   highscore: 0,
+  secondsRemainig: null,
 };
 
 function reducer(state, action) {
@@ -36,6 +39,7 @@ function reducer(state, action) {
       return {
         ...state,
         status: "active",
+        secondsRemainig: state.questions.length * SECS_PER_QUESTIONS,
       };
     case "newAnswer":
       const question = state.questions.at(state.index);
@@ -66,14 +70,22 @@ function reducer(state, action) {
         questions: state.questions,
         status: "ready",
       };
+    case "tick":
+      return {
+        ...state,
+        secondsRemainig: state.secondsRemainig - 1,
+        status: state.secondsRemainig === 0 ? "finished" : state.status,
+      };
     default:
       throw new Error("No data founded");
   }
 }
 
 function App() {
-  const [{ questions, status, index, answer, points, highscore }, dispatch] =
-    useReducer(reducer, initialState);
+  const [
+    { questions, status, index, answer, points, highscore, secondsRemainig },
+    dispatch,
+  ] = useReducer(reducer, initialState);
   const totalQuiz = questions.length;
   const maxPoints = questions.reduce((prev, cur) => prev + cur.points, 0);
 
@@ -107,12 +119,15 @@ function App() {
               dispatch={dispatch}
               answer={answer}
             />
-            <NextButton
-              dispatch={dispatch}
-              answer={answer}
-              index={index}
-              totalQuiz={totalQuiz}
-            />
+            <footer>
+              <Timer dispatch={dispatch} secondsRemainig={secondsRemainig} />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                index={index}
+                totalQuiz={totalQuiz}
+              />
+            </footer>
           </>
         )}
         {status === "finished" && (
